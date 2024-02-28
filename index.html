@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+       function findExpression(target) {
+    const numbers = Array.from({ length: 10 }, (_, i) => 9 - i);
+    const operators = ['+', '-', ''];
+
+    // Генерируем все возможные комбинации операторов
+    const operatorCombinations = getOperatorCombinations(operators, numbers.length - 1);
+
+    for (const ops of operatorCombinations) {
+        let expression = numbers[0].toString();
+        for (let i = 0; i < ops.length; i++) {
+            expression += ops[i] + numbers[i + 1];
+        }
+        
+        // Если результат равен цели, возвращаем выражение
+        if (eval(expression) === target) {
+            return expression + '=' + target;
+        }
+    }
+
+    return "Решение не найдено";
+}
+
+function getOperatorCombinations(operators, length) {
+    const combinations = [];
+    function generate(ops, index) {
+        if (index === length) {
+            combinations.push(ops);
+            return;
+        }
+        operators.forEach(op => generate(ops.concat(op), index + 1));
+    }
+    generate([], 0);
+    return combinations;
+}
+
+const targetNumber = 200;
+const result = findExpression(targetNumber);
+console.log(result);
+    </script>
+</body>
+</html>
